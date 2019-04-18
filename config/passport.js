@@ -66,3 +66,31 @@ passport.use('users-jwt', new JwtStrategy(jwt_opts, async function(jwt_payload, 
     }
 ));
 
+
+// handle jwt authentication for users 
+// this middleware returns an empty user added to req.user if the user has no jwt token
+passport.use('users-may-jwt', new JwtStrategy(jwt_opts, async function(jwt_payload, done) {
+  
+  if( !jwt_payload || !jwt_payload.data || !jwt_payload.data.id  ) {
+      return done({})
+  }
+
+  let { id, timestamp } = jwt_payload.data 
+
+  // if this timestamp is older than 60 minutes, reject it
+  if( (Date.now() - timestamp) > 3600000 ) { 
+    return done(false)
+  }
+
+  let query = 'select * from users where id = ?'
+  let [ rows ] = await db.query(query, [ id ])
+
+  if( rows && rows[0] ) {
+    let { password, ...uzer } = rows[0]
+    return done(null, uzer)
+  }
+  return done(false)
+  
+}
+));
+
