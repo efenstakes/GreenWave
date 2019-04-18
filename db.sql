@@ -10,8 +10,10 @@ create table users (
    id int auto_increment,
    username varchar(50) not null unique,
    passcode varchar(190) not null,
+   email varchar(90),
    city varchar(50),
    dob date not null,
+   joined_on datetime default NOW(),
    user_type enum('CONTENT_CREATOR', 'REGULAR') not null,
    primary key(id)
 );
