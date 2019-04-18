@@ -1,5 +1,6 @@
 // import external libraries
 const router = require('express').Router()
+const passport = require('passport')
 
 // import internal libraries
 const transactionController = require('../controllers/transactions')
@@ -41,7 +42,7 @@ const transactionController = require('../controllers/transactions')
 *
 * @apiUse UnauthorizedError
 */
-router.post('/', transactionController.save)
+router.post('/', passport.authenticate('users-may-jwt', { session: false }), transactionController.save)
 
 
 
@@ -71,7 +72,7 @@ router.post('/', transactionController.save)
 *
 * @apiUse UnauthorizedError
 */
-router.delete('/', transactionController.delete)
+router.delete('/', passport.authenticate('users-jwt', { session: false }), transactionController.delete)
 
 
 

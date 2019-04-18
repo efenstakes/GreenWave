@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken')
 var db = require('../config/database')
 var AppVars = require('../config/vars')
 
+
+
 // create a user account
 module.exports.save = async function(req, res) {
     let response = { saved: false, id: null, errors: [] }
@@ -34,7 +36,7 @@ module.exports.save = async function(req, res) {
 // to delete a user
 module.exports.delete = async function(req, res) {
     let response = { deleted: false }
-    let { id } = req.body 
+    let { id } = req.user 
 
     let query = 'delete from users where id = ?'
     let [ result ] = db.execute(query, [ id ])
@@ -46,9 +48,11 @@ module.exports.delete = async function(req, res) {
 }
 
 
+// uodate user profile
 module.exports.update = async function(req, res) {
     let response = { updated: false }
-    let { username, dob, city, email, id } = req.body 
+    let { id } = req.user
+    let { username, dob, city, email } = req.body 
 
     let query = 'update users set username = ?, email = ?, dob = ?, city = ? where id = ?'
     let [ result ] = await db.execute(query, [ username, email, dob, city, id ])
@@ -61,6 +65,7 @@ module.exports.update = async function(req, res) {
 }
 
 
+// get user details
 module.exports.get_details = async function(req, res) {
     let response = { user: {} }
     let { id } = req.params 
@@ -75,6 +80,7 @@ module.exports.get_details = async function(req, res) {
 
 }
 
+// get a users tips
 module.exports.get_tips = async function(req, res) {
     let response = { tips: {} }
     let { id } = req.params 
@@ -98,7 +104,7 @@ module.exports.get_tips = async function(req, res) {
 
 }
 
-
+// log a user in
 module.exports.login = async function(req, res) {
     let response = { token: null, user: {} }
 

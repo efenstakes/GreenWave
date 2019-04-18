@@ -29,7 +29,6 @@ const userController = require('../controllers/users')
 *    "type": "REGULAR | ADMIN | SUPER_ADMIN"
 * }
 *
-* $http.defaults.headers.common["Authorization"] = token;
 * $http.post(url, data)
 *   .success((res, status) => doSomethingHere())
 *   .error((err, status) => doSomethingHere());
@@ -78,7 +77,7 @@ router.post('/', userController.save)
 *
 * @apiUse UnauthorizedError
 */
-router.delete('/', userController.delete)
+router.delete('/', passport.authenticate('users-jwt', { session: false }), userController.delete)
 
 
 
@@ -121,7 +120,7 @@ router.delete('/', userController.delete)
 *
 * @apiUse UnauthorizedError
 */
-router.put('/', userController.update)
+router.put('/', passport.authenticate('users-jwt', { session: false }), userController.update)
 
 
 
