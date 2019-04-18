@@ -1,0 +1,18 @@
+{
+  "name": "greenwave",
+  "version": "1.0.0",
+  "description": "a tipping server",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "tipping",
+    "server"
+  ],
+  "author": "greenwave team",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
