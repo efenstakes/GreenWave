@@ -1,7 +1,7 @@
 // import external libraries
 const express = require('express')
-
 const bodyParser = require('body-parser')
+const passport = require('passport')
 
 // import internal libraries
 
@@ -19,6 +19,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 
 // setup passport authentication
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./config/passport')
 
 
 

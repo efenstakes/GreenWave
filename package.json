@@ -16,7 +16,10 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.6",
-    "mysql2": "^1.6.5"
+    "mysql2": "^1.6.5",
+    "passport": "^0.4.0",
+    "passport-jwt": "^4.0.0",
+    "passport-local": "^1.0.0"
   },
   "devDependencies": {
     "body-parser": "^1.18.3",
