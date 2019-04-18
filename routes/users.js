@@ -184,6 +184,34 @@ router.post('/login', userController.login)
 router.get('/:id', userController.get_details)
 
 
+/**
+* @api {get} /:id/ Get a user tips
+* @apiVersion 1.0.0
+* @apiName Get a user tips
+* @apiGroup User
+* @apiDescription Get a user tips
+*
+* @apiParam {Number} id the id of the user
+*
+* @apiExample {js} Example usage:
+* const data = {
+* }
+*
+* $http.get(url, data)
+*   .success((res, status) => doSomethingHere())
+*   .error((err, status) => doSomethingHere());
+*
+* @apiSuccess (Success 201) {Object} tips contain user tip list
+* @apiSuccessExample {json} Success response:
+*     HTTPS 201 OK
+*     {
+*      "tips": []
+*    }
+*
+*/
+router.get('/:id/tips', userController.get_tips)
+
+
 
 // export our routes
 module.exports = router
