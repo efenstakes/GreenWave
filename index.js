@@ -7,6 +7,7 @@ const passport = require('passport')
 
 // routes
 const userRoutes = require('./routes/users')
+const transactionRoutes = require('./routes/transactions')
 
 
 // initializing the application instance
@@ -25,12 +26,12 @@ app.use(passport.session())
 require('./config/passport')
 
 
-
 // hook up routes with controllers
 app.use('/api/user', userRoutes)
+app.use('/api/transaction', transactionRoutes)
 
 
 // start app on
 app.listen(9000, function() {
-    console.log('server started')
+    console.log('server started at port: 9000')
 })
