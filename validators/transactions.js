@@ -17,12 +17,21 @@ module.exports.add = [
             let [ userResult ] = await db.query(userQuery, [ name, 'CONTENT_CREATOR' ])
         
             if( !userResult[0] ) {
-                return Promise.reject('Content creator Has Already To Be Registered At GreenWave')
+                return Promise.reject('Content creator Has To Be Registered At GreenWave')
             }
        }),
 
     check('ammount')
         .exists().withMessage('Ammount tipped must be provided')
-        .isCurrency().withMessage('Ammount Must Be A Currency Value')
+        .isCurrency().withMessage('Ammount Must Be A Currency Value'),
+        
+    check('code')
+        .exists().withMessage('Transaction code must be provided')
+        .not().isEmpty().withMessage('Transaction code should not be empty'),
+        
+    check('method')
+        .exists().withMessage('Payment method must be provided')
+        .not().isEmpty().withMessage('Payment method should not be empty')
+        .isIn([ 'PAYPAL', 'AFRICAS_TALKING' ])
 
 ]

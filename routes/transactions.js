@@ -4,6 +4,7 @@ const passport = require('passport')
 
 // import internal libraries
 const transactionController = require('../controllers/transactions')
+const validators = require('../validators/transactions')
 
 
 
@@ -12,7 +13,54 @@ const transactionController = require('../controllers/transactions')
 * @apiVersion  1.0.0
 * @apiName  Create Transaction
 * @apiGroup  Transaction
-* @apiDescription  Create a User Account
+* @apiDescription  Create a new tip record made by a logged in user
+*  
+* @apiParam (Request body) {String} content_creator The id of the content creator
+* @apiParam (Request body) {Decimal} ammount  ammount of money that is being tipped
+* @apiParam (Request body) {String} method  method of payment used 
+* @apiParam (Request body) {String} code  code which will be used to reference this transaction
+*
+* @apiExample {js} Example usage:
+* const data = {
+*    "content_creator": 23,
+*    "ammount": 200,
+*    "method": 'AFRICAS_TALKING' | 'PAYPAL',
+*    "code": '3icwecdFAESR34etcx3w4AEX4'
+* }
+*
+* $http.defaults.headers.common["Authorization"] = token;
+* $http.post(url, data)
+*   .success((res, status) => doSomethingHere())
+*   .error((err, status) => doSomethingHere());
+*
+* @apiSuccess (Success 201) {Boolean} saved Boolean to determine if user was saved successfully
+* @apiSuccess (Success 201) {String} id The id of the saved user (id they were saved)
+* @apiSuccess (Success 201) {List} errors list of errors that were found with the data (if any) 
+*
+* @apiSuccessExample {json} Success response:
+*     HTTPS 201 OK
+*     {
+*      "saved": true|false,
+*      "id": "id",
+*       "errors": []
+*    }
+*
+* @apiUse UnauthorizedError
+*/
+router.post('/', [ 
+                    passport.authenticate('users-jwt', { session: false }),
+                    validators.add 
+                 ], 
+            transactionController.save)
+
+            
+
+/**
+* @api {post} /anonymous make a new transaction
+* @apiVersion  1.0.0
+* @apiName  Create Transaction
+* @apiGroup  Transaction
+* @apiDescription  Create a new tip record by an anonymous user
 *  
 * @apiParam (Request body) {String} content_creator The id of the content creator
 * @apiParam (Request body) {String} ammount  ammount of money that is being tipped
@@ -42,7 +90,7 @@ const transactionController = require('../controllers/transactions')
 *
 * @apiUse UnauthorizedError
 */
-router.post('/', passport.authenticate('users-may-jwt', { session: false }), transactionController.save)
+router.post('/anonymous', validators.add, transactionController.save)
 
 
 
@@ -52,7 +100,7 @@ router.post('/', passport.authenticate('users-may-jwt', { session: false }), tra
 * @apiName  Delete Transaction
 * @apiGroup  Transaction
 * @apiPermission  authenticated user
-* @apiDescription  Delete a User Account 
+* @apiDescription  Delete a transaction 
 *
 * @apiExample {js} Example usage:
 * const data = {
