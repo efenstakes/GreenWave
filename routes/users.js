@@ -1,9 +1,10 @@
 // import external libraries
 const router = require('express').Router()
+const passport = require('passport')
 
 // import internal libraries
 const userController = require('../controllers/users')
-
+var validators = require('../validators/users')
 
 
 /**
@@ -47,7 +48,7 @@ const userController = require('../controllers/users')
 *
 * @apiUse UnauthorizedError
 */
-router.post('/', userController.save)
+router.post('/', validators.register, userController.save)
 
 
 
@@ -120,7 +121,11 @@ router.delete('/', passport.authenticate('users-jwt', { session: false }), userC
 *
 * @apiUse UnauthorizedError
 */
-router.put('/', passport.authenticate('users-jwt', { session: false }), userController.update)
+router.put('/', [ 
+                    passport.authenticate('users-jwt', { session: false }),
+                    validators.update
+                ], 
+           userController.update)
 
 
 
@@ -152,7 +157,7 @@ router.put('/', passport.authenticate('users-jwt', { session: false }), userCont
 *    }
 *
 */
-router.post('/login', userController.login)
+router.post('/login', passport.authenticate('users', { session: false }), userController.login)
 
 
 /**
@@ -209,6 +214,35 @@ router.get('/:id', userController.get_details)
 *
 */
 router.get('/:id/tips', userController.get_tips)
+
+
+
+/**
+* @api {get} /verify/:code  Verify a user
+* @apiVersion 1.0.0
+* @apiName  Verify a user
+* @apiGroup  User
+* @apiDescription  Verify a user
+*
+* @apiParam {String} code the code that was send to the user email
+*
+* @apiExample {js} Example usage:
+* const data = {
+* }
+*
+* $http.get(url, data)
+*   .success((res, status) => doSomethingHere())
+*   .error((err, status) => doSomethingHere());
+*
+* @apiSuccess (Success 201) {Boolean} verified boolean of whether verification succeeded or not
+* @apiSuccessExample {json} Success response:
+*     HTTPS 201 OK
+*     {
+*      "verified": true 
+*    }
+*
+*/
+router.get('/verify/:code', userController.verify)
 
 
 
