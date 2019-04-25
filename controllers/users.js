@@ -53,6 +53,9 @@ module.exports.save = async function(req, res) {
          
             if( verifyResult.affectedRows != 1 ) {
                 throw 'Verification Error'
+            } else {
+                // send welcome mail with the verification link here
+                
             }
 
         } else {

@@ -17,6 +17,12 @@ vars.jwt = {
     secret: 'secret'
 }
 
+vars.mailer = {
+    mail: 'XXXXGMAIL_ACCOUNTXXX',
+    pass: 'XXXXXXGMAIL_PASSWORDXXXXXXXX'
+}
+
+
 
 // export the variables
 module.exports = vars
