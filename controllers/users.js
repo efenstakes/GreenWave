@@ -55,7 +55,7 @@ module.exports.save = async function(req, res) {
                 throw 'Verification Error'
             } else {
                 // send welcome mail with the verification link here
-                
+                utils.sendMail(email, verification_code)
             }
 
         } else {
